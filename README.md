@@ -18,10 +18,46 @@ Find our latest version strutting its stuff on Docker Hub:
 - A Pact provider application with a GraphQL endpoint
 - A burning desire to make your Pact verification more reliable
 
-## Quick Start
-### 1. Fire Up the Engine
-Launch our service with Docker faster than you can brew your morning coffee:
-```sh
+## Quick Start Guide with Examples
+
+### 1. Setting Up Provider States in Your Consumer
+Here's how to define a provider state in your consumer tests using C# and PactNet:
+
+```csharp
+myPactBuilder
+    .UponReceiving("My request")
+    .Given("GraphQL query on /my/graphql/endpoint", new Dictionary<string, string>
+    {
+        {
+            "query",
+            @"
+            mutation {
+                MyResourceMutation(id: 123, value: ""My value"") { id }
+            }
+            "
+        }
+    })
+    .WithRequest(System.Net.Http.HttpMethod.Post, "/some/graphql/endpoint")
+    .WithBody(@"
+        query {
+            MyResource(id: 123) { id, value }
+        }
+    ", "application/json")
+    .WillRespond()
+    .WithStatus(System.Net.HttpStatusCode.OK)
+    .WithJsonBody(new
+    {
+        data = new
+        {
+            MyResource = new { id = 123, value = "My value" }
+        }
+    });
+```
+
+### 2. Launch the Service
+Fire up our service with Docker faster than you can brew your morning coffee:
+
+```bash
 docker container run --rm --detach \
   --env PROVIDER_BASE_URL='http://myprovider:12345/' \
   --name pact-provider-states-setup \
@@ -29,13 +65,34 @@ docker container run --rm --detach \
   pact-provider-states-setup:latest
 ```
 
-### 2. Point Your Pact Verification
+### 3. Run Your Pact Verification
 Tell your Pact verifier where to find us:
-```sh
+
+```bash
 pact verify \
   --provider-base-url='http://my-provider:12345/' \
   --provider-states-setup-url='http://localhost:8000/' \
   /path/to/your-pact-contract.json
+```
+
+### 4. Using with Different GraphQL Operations
+You can use various types of GraphQL operations in your provider states. Here's another example using a query:
+
+```csharp
+.Given("Setup initial data", new Dictionary<string, string>
+{
+    {
+        "query",
+        @"
+        query {
+            SetupTestData(scenario: ""happy-path"") {
+                success
+                message
+            }
+        }
+        "
+    }
+})
 ```
 
 ## How It Works
@@ -44,6 +101,12 @@ Think of us as your provider state concierge:
 2. We catch the provider state setup requests
 3. We forward your GraphQL operations to your provider
 4. Your Pact verification runs smoothly with the right data in place
+
+## Typical Use Cases
+- Setting up test data before verification
+- Cleaning up data between tests
+- Configuring provider behavior for specific scenarios
+- Handling complex state requirements through GraphQL mutations
 
 ## Contributing
 Got ideas? Found a bug? Want to add support for more operations? We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to get started. Because making Pact testing better is a team sport! 🏆
