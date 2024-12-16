@@ -1,71 +1,26 @@
-Pact provider states setup
-==========================
+# pact-provider-states-setup: Your Provider States Made Easy! 🎯
+## Overview
+Welcome to pact-provider-states-setup, an open-source service that makes handling Pact provider states as easy as ordering takeout! We know setting up provider states for Pact verification can be tricky - it's like trying to set up a perfect game of Jenga. That's why we've created this simple web service that adds provider states support without requiring you to modify your existing provider application.
 
-**Pact provider states setup** is a simple web service adding support for Pact
-[provider states](https://docs.pact.io/getting_started/provider_states) setup.
+Currently, we're laser-focused on GraphQL, supporting forwarding of queries and mutations to your provider's endpoints. Think of it as your GraphQL traffic controller, making sure your test data is right where it needs to be for successful Pact verification.
 
-Using this tool, you can add support for provider states to your Pact provider
-app without modifying it.
+## Latest Release
+Find our latest version strutting its stuff on Docker Hub:
+- [Docker Hub](https://hub.docker.com/r/agoda/pact-provider-states-setup)
 
-It currently supports only forwarding arbitrary GraphQL queries and mutations to
-a given path relative to the provider base URL. This may be sufficient to set
-initial data for your Pact verification to succeed.
+## Features
+- **Zero Provider Modification**: Add provider states support without touching your provider app. It's like adding a turbo boost without opening the hood!
+- **GraphQL Support**: Seamlessly forward your GraphQL queries and mutations. We speak GraphQL fluently!
+- **Docker Ready**: Deploy faster than you can say "docker run". Because who has time for complex setups?
 
-Example
--------
+## Requirements
+- Docker (Because containers are life 🐳)
+- A Pact provider application with a GraphQL endpoint
+- A burning desire to make your Pact verification more reliable
 
-### 1. Prerequisites
-
-Suppose that you have:
-
-* A Pact provider: a web service listening at `http://myprovider:12345/` and
-  exposing a GraphQL endpoint `/my/graphql/endpoint`
-* A Pact consumer calling this endpoint: in this example, we use a C# app using
-  [PactNet](https://www.nuget.org/packages/PactNet/) for Pact support, but the
-  concept should apply to any consumer app using a stack with Pact V3 support
-
-### 2. Generating a Pact contract with provider state
-
-Get a `myconsumer-myprovider.json` contract by running Pact verification from
-tests in your consumer app. A Pact provider state is added to a request via the
-`Given` method on the pact builder, like this:
-
-```cs
-myPactBuilder
-    .UponReceiving("My request")
-    .Given("GraphQL query on /my/graphql/endpoint", new Dictionary<string, string>
-    {
-        {
-            "query",
-            $@"
-            mutation {{
-                MyResourceMutation(id: 123, value: ""My value"") {{ id }}
-            }}
-            "
-        }
-    })
-    .WithRequest(System.Net.Http.HttpMethod.Post, "/some/graphql/endpoint")
-    .WithBody($@"
-        query {{
-            MyResource(id: 123) {{ id, value }}
-        }}
-    ", "application/json")
-    .WillRespond()
-    .WithStatus(System.Net.HttpStatusCode.OK)
-    .WithJsonBody(new
-    {
-        data = new
-        {
-            MyResource = new { id = 123, value = "My value" }
-        }
-    });
-```
-
-### 3. Spawning *Pact provider states setup*
-
-Spawn *Pact provider states setup* using Docker and pass the the base URL to
-your provider app via the `PROVIDER_BASE_URL` environment variable, like this:
-
+## Quick Start
+### 1. Fire Up the Engine
+Launch our service with Docker faster than you can brew your morning coffee:
 ```sh
 docker container run --rm --detach \
   --env PROVIDER_BASE_URL='http://myprovider:12345/' \
@@ -74,27 +29,28 @@ docker container run --rm --detach \
   pact-provider-states-setup:latest
 ```
 
-*Pact provider states setup* is now listening at `http://localhost:8000/`.
-
-### 4. Verify a Pact contract using provider state
-
-Run Pact provider verification using [Pact command line
-tools](https://docs.pact.io/implementation_guides/cli), like this:
-
+### 2. Point Your Pact Verification
+Tell your Pact verifier where to find us:
 ```sh
 pact verify \
   --provider-base-url='http://my-provider:12345/' \
   --provider-states-setup-url='http://localhost:8000/' \
-  /path/to/myconsumer-myprovider.json
+  /path/to/your-pact-contract.json
 ```
 
-Before each Pact contract interaction, the GraphQL mutation, passed as a Pact
-provider state, is first forwarded to your provider app before the Pact
-verification is performed.
+## How It Works
+Think of us as your provider state concierge:
+1. You define your provider states in your consumer tests
+2. We catch the provider state setup requests
+3. We forward your GraphQL operations to your provider
+4. Your Pact verification runs smoothly with the right data in place
 
-### 5. Conclusion
+## Contributing
+Got ideas? Found a bug? Want to add support for more operations? We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to get started. Because making Pact testing better is a team sport! 🏆
 
-Using Pact provider states and *Pact provider states setup* allows you to **set,
-from your consumer app, the state of your provider app without modifying it**.
+## And Finally...
+Remember, good provider states are like good pizza toppings - they need to be just right for everything to work perfectly. With pact-provider-states-setup, you'll never have to worry about getting those toppings wrong again!
 
-This can help stabilising Pact verification on provider side.
+Happy testing, and may your Pact verifications always be green! 💚
+
+Made with ❤️ by the Agoda Dev Team
