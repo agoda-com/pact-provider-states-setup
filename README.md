@@ -1,6 +1,6 @@
 # pact-provider-states-setup: Your Provider States Made Easy! 🎯
 ## Overview
-Welcome to pact-provider-states-setup, an open-source service that makes handling Pact provider states as easy as ordering takeout! We know setting up provider states for Pact verification can be tricky - it's like trying to set up a perfect game of Jenga. That's why we've created this simple web service that adds provider states support without requiring you to modify your existing provider application.
+Welcome to pact-provider-states-setup, an open-source service that makes handling Pact [provider states](https://docs.pact.io/getting_started/provider_states) as easy as ordering takeout! We know setting up provider states for Pact verification can be tricky - it's like trying to set up a perfect game of Jenga. That's why we've created this simple web service that adds provider states support without requiring you to modify your existing provider application.
 
 Currently, we're laser-focused on GraphQL, supporting forwarding of queries and mutations to your provider's endpoints. Think of it as your GraphQL traffic controller, making sure your test data is right where it needs to be for successful Pact verification.
 
