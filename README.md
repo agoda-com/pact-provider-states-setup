@@ -6,7 +6,7 @@ Currently, we're laser-focused on GraphQL, supporting forwarding of queries and 
 
 ## Latest Release
 Find our latest version strutting its stuff on Docker Hub:
-- [Docker Hub](https://hub.docker.com/r/agoda/pact-provider-states-setup)
+- [Package pact-provider-states-setup](https://ghcr.io/agoda-com/pact-provider-states-setup)
 
 ## Features
 - **Zero Provider Modification**: Add provider states support without touching your provider app. It's like adding a turbo boost without opening the hood!
