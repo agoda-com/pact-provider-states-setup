@@ -21,7 +21,7 @@ Find our latest version strutting its stuff on Docker Hub:
 ## Quick Start Guide with Examples
 
 ### 1. Setting Up Provider States in Your Consumer
-Here's how to define a provider state in your consumer tests using C# and PactNet:
+Here's how to define a provider state in your consumer tests using C# and [PactNet](https://www.nuget.org/packages/PactNet/):
 
 ```csharp
 myPactBuilder
