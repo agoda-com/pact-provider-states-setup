@@ -68,7 +68,7 @@ docker container run --rm --detach \
 ### 3. Run Your Pact Verification
 Tell your Pact verifier where to find us:
 
-```bash
+```sh
 pact verify \
   --provider-base-url='http://my-provider:12345/' \
   --provider-states-setup-url='http://localhost:8000/' \
