@@ -57,7 +57,7 @@ myPactBuilder
 ### 2. Launch the Service
 Fire up our service with Docker faster than you can brew your morning coffee:
 
-```bash
+```sh
 docker container run --rm --detach \
   --env PROVIDER_BASE_URL='http://myprovider:12345/' \
   --name pact-provider-states-setup \
