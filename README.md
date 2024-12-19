@@ -109,7 +109,7 @@ Think of us as your provider state concierge:
 - Handling complex state requirements through GraphQL mutations
 
 ## Contributing
-Got ideas? Found a bug? Want to add support for more operations? We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to get started. Because making Pact testing better is a team sport! 🏆
+Got ideas? Found a bug? Want to add support for more operations? We love contributions! Feel free to send us your pull requests. Because making Pact testing better is a team sport! 🏆
 
 ## And Finally...
 Remember, good provider states are like good pizza toppings - they need to be just right for everything to work perfectly. With pact-provider-states-setup, you'll never have to worry about getting those toppings wrong again!
