@@ -21,12 +21,12 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
       data = loads(self.rfile.read(int(self.headers['Content-Length'])))
 
-      if not data.get('state') or not data.get('params'):
-         self.respond(200, "No state or params found in the request body. Skipping provider state setup.")
+      if 'state' not in data or 'params' not in data:
+         self.respond(200, 'No state or params found in the request body. Skipping provider state setup.')
          return
 
       if (matches := graphql_query_state_regex.fullmatch(data['state'])) is None:
-         self.respond(200, f'''State not supported: {data['state']} - skipping provider state setup.''')
+         self.respond(200, f'''State not supported: "{data['state']}" - skipping provider state setup.''')
          return
 
       out_req = Request(
