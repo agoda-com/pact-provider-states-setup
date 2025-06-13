@@ -21,7 +21,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
       data = loads(self.rfile.read(int(self.headers['Content-Length'])))
 
-      if 'state' not in data or 'params' not in data:
+      if not data.get("state") or not data.get("params"):
          self.respond(200, 'No state or params found in the request body. Skipping provider state setup.')
          return
 
